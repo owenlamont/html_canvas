@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Balls in a Box</title>
+    <link rel="stylesheet" type="text/css" href="mainstyle.css">
+    
+    <script type="text/javascript">
+    
+    var NUM_PARTICLES = 500;
+    
+    // Contructs a 2D vector object
+    function Vector2D(x, y)
+    {
+	this.x = x;
+	this.y = y;
+    }
+
+    // Creates a random color intensity in the range 0 - 255
+    function randomColorIntensity()
+    {
+        var intensity = parseInt(Math.random() * 255);
+        return intensity.toString();
+    }//end function randomColorIntensity
+
+    function randomColor()
+    {
+        var color = "rgb(";
+        color += randomColorIntensity();
+        color += ",";
+        color += randomColorIntensity();
+        color += ",";
+        color += randomColorIntensity();
+        color += ")";
+        return color;
+    }
+    
+    // Constructs a particle object
+    function Particle(position, velocity)
+    {
+	    this.position = new Vector2D(position.x, position.y);
+	    this.velocity = new Vector2D(velocity.x, velocity.y);
+        this.color = randomColor();
+    }
+    
+    // Create an array for the particles
+    var particles = new Array(NUM_PARTICLES);
+    
+    function randomRange(min, max)
+    {
+	var output = min + Math.random() * (max - min);
+	if(Math.random() >= 0.5)
+	{
+	    output = -output;
+	}
+	return output;
+    }
+    
+    // Initialize the particles array and perform the first draw
+    function initializeBalls()
+    {
+	var canvas = document.getElementById('ballbox');
+	canvas.width = window.innerWidth - 25;
+	canvas.height = window.innerHeight - 25;
+	for(var count=0; count < NUM_PARTICLES; count += 1)
+	{
+	    particles[count] = new Particle(new Vector2D(Math.random() * canvas.width, Math.random() * canvas.height),
+					    new Vector2D(randomRange(1, 2), randomRange(1, 2)));
+	}
+	
+	setInterval(updateBalls, 10);
+    }
+
+    // Update the ball position
+    function updateBalls()
+    {
+        var canvas = document.getElementById('ballbox');
+	    canvas.width = window.innerWidth - 25;
+        canvas.height = window.innerHeight - 25;
+        if (canvas.getContext)
+        {
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            for(var count=0; count < NUM_PARTICLES; count += 1)
+            {
+                particles[count].position.x += particles[count].velocity.x;
+                particles[count].position.y += particles[count].velocity.y;
+
+                if(particles[count].position.x > canvas.width && particles[count].velocity.x > 0)
+                {
+                    particles[count].position.x = canvas.width;
+                    particles[count].velocity.x = -particles[count].velocity.x;
+                }
+
+                if(particles[count].position.x < 0 && particles[count].velocity.x < 0)
+                {
+                    particles[count].position.x = 0;
+                    particles[count].velocity.x = -particles[count].velocity.x;
+                }
+
+                if(particles[count].position.y > canvas.height && particles[count].velocity.y > 0)
+                {
+                    particles[count].position.y = canvas.height;
+                    particles[count].velocity.y = -particles[count].velocity.y;
+                }
+
+                if(particles[count].position.y < 0 && particles[count].velocity.y < 0)
+                {
+                    particles[count].position.y = 0;
+                    particles[count].velocity.y = -particles[count].velocity.y;
+                }
+
+                ctx.fillStyle = particles[count].color;
+                ctx.fillRect(particles[count].position.x, particles[count].position.y, 5, 5);
+            }
+        }
+    }
+    </script>
+</head>
+
+<body onload="initializeBalls();">
+    <canvas id="ballbox" width="500" height="500"></canvas>
+</body>
+</html>

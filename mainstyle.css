@@ -1,0 +1,52 @@
+canvas {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+h1 {
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+p.link {
+    color: white;
+    text-align: center;
+}
+
+p.centered {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:link {
+    color:lightgrey;
+}
+
+a:visited {
+    color:gray;
+}
+
+a:hover {
+    color:white;
+}
+
+address {
+    text-align: center;
+}
+
+img.hidden {
+    display: none;
+}
